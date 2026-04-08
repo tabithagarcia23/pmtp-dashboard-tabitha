@@ -1367,7 +1367,7 @@ function App(){
   const[modSearch,setModSearch]=useState('');
   const[sidebarOpen,setSidebarOpen]=useState(false);
   const[showCreds,setShowCreds]=useState(false);
-  const[zoom,setZoom]=useState(()=>{const saved=localStorage.getItem('pmtp_zoom');return saved?parseFloat(saved):1;});
+  const[zoom,setZoom]=useState(()=>{const saved=localStorage.getItem('pmtp_zoom');return saved?parseFloat(saved):1.15;});
   function changeZoom(z){const clamped=Math.min(1.3,Math.max(0.75,z));setZoom(clamped);localStorage.setItem('pmtp_zoom',clamped);}
   const[googleTok,setGoogleTok]=useState(()=>{const tok=localStorage.getItem('pmtp_gtok');const exp=parseInt(localStorage.getItem('pmtp_gexp')||'0');return tok&&Date.now()<exp?tok:null;});
   const[calLoad,setCalLoad]=useState(null);
@@ -1444,30 +1444,26 @@ function App(){
     const id=item?.id||uid();
     const item_data={};
     m.fields.forEach(f=>{if(form[f.k]!==undefined)item_data[f.k]=form[f.k];});
-    const _tok=(JSON.parse(localStorage.getItem('pmtp_s')||'null')||{}).access_token||window.PMTP.SUPABASE_KEY;
-    const _sr=await fetch(window.PMTP.SUPABASE_URL+'/rest/v1/dashboard_items',{method:'POST',headers:{'Content-Type':'application/json','apikey':window.PMTP.SUPABASE_KEY,'Authorization':'Bearer '+_tok,'Prefer':'resolution=merge-duplicates,return=minimal'},body:JSON.stringify({id,user_id:session.user.id,module_id:mid,item_data,done:false})});
-    if(!_sr.ok){showToast('Could not save.','err');return;}
+    const{error}=await sb.from('dashboard_items').upsert({id,user_id:session.user.id,module_id:mid,item_data,done:false});
+    if(error){showToast('Could not save.','err');return;}
     const entry={...item_data,id,done:false};
     setData(p=>({...p,[mid]:item?p[mid].map(i=>i.id===id?entry:i):[...p[mid],entry]}));
     setModal(null);setForm({});showToast(item?'Entry updated.':'Entry added.');
   }
   async function moveToModule(fromMid,toMid,item){
-    const _tok4=(JSON.parse(localStorage.getItem('pmtp_s')||'null')||{}).access_token||window.PMTP.SUPABASE_KEY;
-    const _mr=await fetch(window.PMTP.SUPABASE_URL+'/rest/v1/dashboard_items?id=eq.'+item.id,{method:'PATCH',headers:{'Content-Type':'application/json','apikey':window.PMTP.SUPABASE_KEY,'Authorization':'Bearer '+_tok4,'Prefer':'return=minimal'},body:JSON.stringify({module_id:toMid})});
-    if(!_mr.ok){showToast('Could not move item','err');return;}
+    const{error}=await sb.from('dashboard_items').update({module_id:toMid}).eq('id',item.id);
+    if(error){showToast('Could not move item','err');return;}
     setData(p=>({...p,[fromMid]:(p[fromMid]||[]).filter(x=>x.id!==item.id),[toMid]:[...(p[toMid]||[]),{...item,module_id:toMid}]}));
     showToast('Moved to Time Sensitive Follow-Ups!');
   }
   async function toggleDone(mid,id,current){
-    const _tok2=(JSON.parse(localStorage.getItem('pmtp_s')||'null')||{}).access_token||window.PMTP.SUPABASE_KEY;
-    const _tr=await fetch(window.PMTP.SUPABASE_URL+'/rest/v1/dashboard_items?id=eq.'+id,{method:'PATCH',headers:{'Content-Type':'application/json','apikey':window.PMTP.SUPABASE_KEY,'Authorization':'Bearer '+_tok2,'Prefer':'return=minimal'},body:JSON.stringify({done:!current})});
-    if(!_tr.ok){showToast('Update failed.','err');return;}
+    const{error}=await sb.from('dashboard_items').update({done:!current}).eq('id',id);
+    if(error){showToast('Update failed.','err');return;}
     setData(p=>({...p,[mid]:p[mid].map(i=>i.id===id?{...i,done:!current}:i)}));
   }
   async function deleteItem(mid,id){
-    const _tok3=(JSON.parse(localStorage.getItem('pmtp_s')||'null')||{}).access_token||window.PMTP.SUPABASE_KEY;
-    const _dr=await fetch(window.PMTP.SUPABASE_URL+'/rest/v1/dashboard_items?id=eq.'+id,{method:'DELETE',headers:{'apikey':window.PMTP.SUPABASE_KEY,'Authorization':'Bearer '+_tok3}});
-    if(!_dr.ok){showToast('Delete failed.','err');return;}
+    const{error}=await sb.from('dashboard_items').delete().eq('id',id);
+    if(error){showToast('Delete failed.','err');return;}
     setData(p=>({...p,[mid]:p[mid].filter(i=>i.id!==id)}));
     setConfirm(null);showToast('Item removed.');
   }
