@@ -165,6 +165,7 @@ const MODS=[
   {id:'fitHub',nav:'FIT Trip Hub',label:'FIT Trip Hub',icon:'🗺️',accent:'#c9a84c',fields:[]},
   {id:'checklists',nav:'Booking Checklists',label:'Booking Checklists',short:'Checklists',icon:'📝',accent:'#7b68ee',fields:[]},
   {id:'calendar',nav:'Calendar / Agenda',label:'Calendar / Agenda',icon:'📅',accent:'#2e8b8b',fields:[]},
+  {id:'clientChanges',nav:'Client Change Requests',label:'Client Change Requests',short:'Change Requests',icon:'🔄',accent:'#e67e22',fields:[{k:'client',l:'Client Name',t:'text',req:true},{k:'changeType',l:'Type of Change',t:'select',opts:['Hotel','Flight','Tour','Transfer','Train','Cruise','Dining','Car Rental','Excursion','Insurance','Visa','Room Type','Cabin Category','Dates','Passenger Info','Payment','Cancellation','Other']},{k:'reservation',l:'Reservation # or Description',t:'text'},{k:'requestDate',l:'Date Requested',t:'date',req:true},{k:'dueDate',l:'Due Date',t:'date'},{k:'notes',l:'Notes',t:'area'}]},
   {id:'components',nav:'Components Needed',label:'Trip Needs Components Added',short:'Components Needed',icon:'✈️',accent:T.tealLight,fields:[{k:'client',l:'Client Name',t:'text',req:true},{k:'trip',l:'Trip',t:'text'},{k:'components',l:'Components Needed',t:'area',req:true},{k:'travelDate',l:'Travel Date',t:'date'},{k:'dueDate',l:'Booking Due Date',t:'date'},{k:'notes',l:'Notes',t:'area'}]},
   {id:'finalPayments',nav:'Final Payments',label:'Final Payments Due',short:'Final Payments',icon:'💳',accent:T.gold,fields:[{k:'client',l:'Client Name',t:'text',req:true},{k:'trip',l:'Trip / Booking #',t:'text'},{k:'supplier',l:'Supplier',t:'text'},{k:'amount',l:'Amount Due ($)',t:'text'},{k:'dueDate',l:'Payment Due Date',t:'date',req:true},{k:'notes',l:'Notes',t:'area'}]},
   {id:'hotelRequests',nav:'Hotel Requests',label:'Hotel Requests',short:'Hotel Requests',icon:'🏨',accent:'#e67e22',fields:[ {k:'client',l:'Client Name',t:'text',req:true}, {k:'hotel',l:'Hotel Name',t:'text',req:true}, {k:'destination',l:'Destination',t:'text'}, {k:'checkIn',l:'Check-In Date',t:'date'}, {k:'checkOut',l:'Check-Out Date',t:'date'}, {k:'roomType',l:'Room Type / Request',t:'text'}, {k:'guests',l:'Number of Guests',t:'text'}, {k:'status',l:'Status',t:'select',opts:['Request Sent','Request Acknowledged','Quote Received','Second Request Sent','Awaiting Approval','Request Approved','Booked','On Hold','Waitlisted','Declined','Cancelled']}, {k:'rate',l:'Rate / Total',t:'text'}, {k:'notes',l:'Special Requests / Notes',t:'area'}, ]},
@@ -695,7 +696,7 @@ function ChatView({session,showToast}){
 }
 
 function StaffRequestsView({session,showToast,agentName}){
-  const ADMIN_NAMES=['Christina Oman','Tabitha Garcia'];
+  const ADMIN_NAMES=['Christina Garcia','Tabitha Garcia'];
   const isAdmin=ADMIN_NAMES.includes(agentName)||ADMIN_NAMES.some(n=>agentName&&n.toLowerCase().includes(agentName.toLowerCase().split(' ')[0]));
   const SB_URL=CHAT_SB_URL,SB_KEY=CHAT_SB_KEY;
   const hdrs={'Content-Type':'application/json','apikey':SB_KEY,'Authorization':'Bearer '+SB_KEY};
@@ -1020,7 +1021,7 @@ function StaffRequestsView({session,showToast,agentName}){
 }
 
 function AdminCoWorkView({session,showToast,agentName}){
-  const ADMINS=['Christina Oman','Tabitha Garcia'];
+  const ADMINS=['Christina Garcia','Tabitha Garcia'];
   const OTHER=ADMINS.filter(a=>a!==agentName)[0]||'Tabitha Garcia';
   const SB_URL=CHAT_SB_URL,SB_KEY=CHAT_SB_KEY;
   const hdrs={'Content-Type':'application/json','apikey':SB_KEY,'Authorization':'Bearer '+SB_KEY};
@@ -1720,7 +1721,7 @@ function AgentRequestsView({session,showToast,onCreateTrip}){
 function FitPayDueSection({agentName,showToast,onView,preloadedComps,onRefresh}){
   const CHAT_SB_URL='https://voowpwzpilymtaeskmom.supabase.co';
   const CHAT_SB_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZvb3dwd3pwaWx5bXRhZXNrbW9tIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUzOTU3NjgsImV4cCI6MjA5MDk3MTc2OH0.6q67zuDJAWpaRHlFWbLFYFRCK_LcNrU6_2bWYetE76Y';
-  const ADMIN_NAMES=['Christina Oman','Tabitha Garcia'];
+  const ADMIN_NAMES=['Christina Garcia','Tabitha Garcia'];
   const resolvedName=agentName||'';
   const isAdmin=ADMIN_NAMES.includes(resolvedName)||ADMIN_NAMES.some(n=>resolvedName&&n.toLowerCase().includes(resolvedName.toLowerCase().split(' ')[0]));
   const[comps,setComps]=React.useState(preloadedComps&&preloadedComps.length>0?preloadedComps:[]);
@@ -1816,7 +1817,7 @@ function FitTripHubView({session,showToast,agentName}){
   const resolvedAgentName=agentName||session?.user?.user_metadata?.full_name||session?.user?.email?.split('@')[0]||'';
   const CHAT_SB_URL='https://voowpwzpilymtaeskmom.supabase.co';
   const CHAT_SB_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZvb3dwd3pwaWx5bXRhZXNrbW9tIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUzOTU3NjgsImV4cCI6MjA5MDk3MTc2OH0.6q67zuDJAWpaRHlFWbLFYFRCK_LcNrU6_2bWYetE76Y';
-  const ADMIN_NAMES=['Christina Oman','Tabitha Garcia'];
+  const ADMIN_NAMES=['Christina Garcia','Tabitha Garcia'];
   const isAdmin=ADMIN_NAMES.includes(resolvedAgentName)||ADMIN_NAMES.some(n=>resolvedAgentName&&n.toLowerCase().includes(resolvedAgentName.toLowerCase().split(' ')[0]));
   const PRODUCT_TYPES=['Hotel','Tour','Transfer','Flights','Rail','Cruise','Insurance','Excursion','Restaurant','Dining','Tickets','Car Rental','Other'];
   const T={navy:'#1b2d3a',teal:'#2e8b8b',tealPale:'#e8f5f5',tealDeep:'#2e8b8b',gold:'#c9a84c',goldPale:'#f7f0de',goldDeep:'#9a7530',green:'#2a7a50',greenPale:'#e6f4ed',orange:'#d4843e',orangePale:'#fff3e0',red:'#c0392b',redPale:'#fdecea',border:'#ede8df',text:'#1b2d3a',textSec:'#5a7a8a',textSub:'#9ab0bb',white:'#fff',cream:'#faf7f2'};
@@ -1893,7 +1894,7 @@ function FitTripHubView({session,showToast,agentName}){
   async function sendTripMessage(){
     if(!tripMsgText.trim()||!selectedTrip)return;
     setTripMsgSending(true);
-    const FIT_ADMINS=['Christina Oman','Tabitha Garcia'];
+    const FIT_ADMINS=['Christina Garcia','Tabitha Garcia'];
     const isAdm=FIT_ADMINS.includes(resolvedAgentName)||FIT_ADMINS.some(n=>resolvedAgentName&&n.toLowerCase().includes(resolvedAgentName.toLowerCase().split(' ')[0]));
     try{
       await fetch(CHAT_SB_URL+'/rest/v1/fit_trip_messages',{method:'POST',headers:{'Content-Type':'application/json','apikey':CHAT_SB_KEY,'Authorization':'Bearer '+CHAT_SB_KEY,'Prefer':'return=minimal'},body:JSON.stringify({trip_id:selectedTrip.id,author_name:resolvedAgentName,is_admin:isAdm,message:tripMsgText.trim()})});
@@ -3273,7 +3274,7 @@ function CommissionView({session,sb,showToast}){
             </div>}
             {pendForm.referral_type==='agent_to_agent'&&<div style={{display:'flex',flexDirection:'column',gap:4,marginBottom:12}}>
               <label style={{...lbl,color:'#7b5ea7'}}>Splitting With (Agent Name)</label>
-              <input value={pendForm.split_with||''} onChange={e=>setPendForm(f=>({...f,split_with:e.target.value}))} style={{...inp,border:'1px solid rgba(123,94,167,0.4)'}} placeholder="e.g. Christina Oman"/>
+              <input value={pendForm.split_with||''} onChange={e=>setPendForm(f=>({...f,split_with:e.target.value}))} style={{...inp,border:'1px solid rgba(123,94,167,0.4)'}} placeholder="e.g. Christina Garcia"/>
             </div>}
             <div style={{display:'grid',gridTemplateColumns:'repeat(auto-fit,minmax(160px,1fr))',gap:10,marginBottom:14}}>
               {[['client','Client Name','text'],['supplier','Supplier','text'],['ref','Booking Ref','text'],['gross','Gross Booking ($)','number'],['supplier_pct','Supplier Comm %','number']].map(([k,l,t])=>(<div key={k} style={{display:'flex',flexDirection:'column',gap:4}}><label style={lbl}>{l}</label><input type={t} value={pendForm[k]||''} onChange={e=>{const nf={...pendForm,[k]:e.target.value};const calc=calcComm(nf);setPendForm({...nf,expected_amount:calc||pendForm.expected_amount});}} style={inp} placeholder={l}/></div>))}
@@ -3422,6 +3423,7 @@ function App(){
   const[searchQ,setSearchQ]=useState('');
   const[modSearch,setModSearch]=useState('');
   const[sidebarOpen,setSidebarOpen]=useState(false);
+  const[reminderOpen,setReminderOpen]=useState(false);
   const[showCreds,setShowCreds]=useState(false);
   const[zoom,setZoom]=useState(()=>{const saved=localStorage.getItem('pmtp_zoom');return saved?parseFloat(saved):1;});
   function changeZoom(z){const clamped=Math.min(1.3,Math.max(0.75,z));setZoom(clamped);localStorage.setItem('pmtp_zoom',clamped);}
@@ -3459,7 +3461,7 @@ function App(){
   },[session,agentNameForChat]);
   async function fetchFitPayData(name){
     try{
-      const FIT_ADMINS=['Christina Oman','Tabitha Garcia'];
+      const FIT_ADMINS=['Christina Garcia','Tabitha Garcia'];
       const isFitAdmin=FIT_ADMINS.includes(name)||FIT_ADMINS.some(n=>name&&n.toLowerCase().includes(name.toLowerCase().split(' ')[0]));
       if(!isFitAdmin)return;
       const fitCompRes=await fetch(CHAT_SB_URL+'/rest/v1/fit_components?ready_to_pay=eq.true&paid=eq.false&select=id,vendor,cost,markup,stripe_fees,vendor_commission,trip_id,scheduled,scheduled_at,due_date&order=ready_at.asc',{headers:{'apikey':CHAT_SB_KEY,'Authorization':'Bearer '+CHAT_SB_KEY}});
@@ -3556,7 +3558,7 @@ function App(){
         }catch(e){}
         // Staff requests badge (admins only)
         try{
-          const SREQ_ADMINS=['Christina Oman','Tabitha Garcia'];
+          const SREQ_ADMINS=['Christina Garcia','Tabitha Garcia'];
           const isSReqAdmin=SREQ_ADMINS.includes(agentName)||SREQ_ADMINS.some(n=>agentName&&n.toLowerCase().includes(agentName.toLowerCase().split(' ')[0]));
           if(isSReqAdmin){
             const srR=await fetch(CHAT_SB_URL+'/rest/v1/staff_requests?status=eq.pending&select=id',{headers:{'apikey':CHAT_SB_KEY,'Authorization':'Bearer '+CHAT_SB_KEY}});
@@ -3716,10 +3718,19 @@ function App(){
             const isCollabLabel=m.id==='referrals';
             const isFitLabel=m.id==='fitHub';
             const isReminderLabel=m.id==='checklists';
+            const isReminderMod=['checklists','calendar','clientChanges','components','finalPayments','hotelRequests','itineraries','newInquiries','obc','softFollowups','supplierInteractions'].includes(m.id);
+            if(isReminderMod&&!reminderOpen&&!isReminderLabel)return null;
+            const skipButton=isReminderLabel&&!reminderOpen;
             const isAgentLabel=m.id==='staffRequests';
             const isBottomSection=m.id==='vault';
-            if(m.id==='adminCowork'&&!(['Christina Oman','Tabitha Garcia'].includes(agentName)||['Christina Oman','Tabitha Garcia'].some(n=>agentName&&n.toLowerCase().includes(agentName.toLowerCase().split(' ')[0]))))return null;
-            return<React.Fragment key={m.id}>{divBefore&&<div style={{height:'1px',background:'rgba(255,255,255,0.12)',margin:'5px 12px'}}/>}{isCollabLabel&&<div style={{fontSize:9,letterSpacing:'0.16em',color:'#2e8b8b',textTransform:'uppercase',padding:'8px 16px 2px',fontFamily:"'Georgia',serif"}}>Collaboration Station</div>}{isFitLabel&&<div style={{fontSize:9,letterSpacing:'0.16em',color:'#2e8b8b',textTransform:'uppercase',padding:'8px 16px 2px',fontFamily:"'Georgia',serif"}}>FIT Station</div>}{isReminderLabel&&<div style={{fontSize:9,letterSpacing:'0.16em',color:'#2e8b8b',textTransform:'uppercase',padding:'8px 16px 2px',fontFamily:"'Georgia',serif"}}>Reminder Station</div>}{isAgentLabel&&<div style={{fontSize:9,letterSpacing:'0.16em',color:'#2e8b8b',textTransform:'uppercase',padding:'8px 16px 2px',fontFamily:"'Georgia',serif"}}>My Agent Station</div>}}<button onClick={()=>{if(m.external){window.open(m.external,'_blank');}else{if(m.id==='staffRequests')setStaffReqCount(0);if(m.id==='adminCowork')setAdminCoworkCount(0);setView(m.id);setShowDone(false);setModSearch('');}setSidebarOpen(false);}} style={{display:'flex',alignItems:'center',justifyContent:'space-between',width:'100%',padding:'10px 14px 10px 12px',background:isA?'rgba(201,168,76,0.14)':'transparent',border:'none',borderLeft:isA?'3px solid '+T.gold:'3px solid transparent',cursor:'pointer'}}>
+            if(m.id==='adminCowork'&&!(['Christina Garcia','Tabitha Garcia'].includes(agentName)||['Christina Garcia','Tabitha Garcia'].some(n=>agentName&&n.toLowerCase().includes(agentName.toLowerCase().split(' ')[0]))))return null;
+            return<React.Fragment key={m.id}>{divBefore&&<div style={{height:'1px',background:'rgba(255,255,255,0.12)',margin:'5px 12px'}}/>}{isCollabLabel&&<div style={{fontSize:13,letterSpacing:'0.1em',color:'#2e8b8b',textTransform:'uppercase',padding:'10px 16px 4px',fontFamily:"'Georgia',serif",fontWeight:700}}>Collaboration Station</div>}{isFitLabel&&<div style={{fontSize:13,letterSpacing:'0.1em',color:'#2e8b8b',textTransform:'uppercase',padding:'10px 16px 4px',fontFamily:"'Georgia',serif",fontWeight:700}}>FIT Station</div>}{isReminderLabel&&<button onClick={()=>setReminderOpen(v=>!v)} style={{display:'flex',alignItems:'center',justifyContent:'space-between',width:'100%',padding:'10px 16px 4px',background:'transparent',border:'none',cursor:'pointer'}}>
+              <span style={{fontSize:13,letterSpacing:'0.1em',color:'#2e8b8b',textTransform:'uppercase',fontFamily:"'Georgia',serif",fontWeight:700}}>Reminder Station</span>
+              <div style={{display:'flex',alignItems:'center',gap:5}}>
+                {(()=>{const cnt=['checklists','calendar','clientChanges','components','finalPayments','hotelRequests','itineraries','newInquiries','obc','softFollowups','supplierInteractions'].reduce((s,id)=>s+(active(id)||[]).length,0);return cnt>0?<span style={{background:'#2e8b8b',color:'#fff',fontSize:9,fontWeight:700,padding:'1px 6px',borderRadius:10}}>{cnt}</span>:null;})()}
+                <span style={{fontSize:10,color:'#2e8b8b'}}>{reminderOpen?'▲':'▼'}</span>
+              </div>
+            </button>}{isAgentLabel&&<div style={{fontSize:13,letterSpacing:'0.1em',color:'#2e8b8b',textTransform:'uppercase',padding:'10px 16px 4px',fontFamily:"'Georgia',serif",fontWeight:700}}>My Agent Station</div>}}{!skipButton&&<button onClick={()=>{if(m.external){window.open(m.external,'_blank');}else{if(m.id==='staffRequests')setStaffReqCount(0);if(m.id==='adminCowork')setAdminCoworkCount(0);setView(m.id);setShowDone(false);setModSearch('');}setSidebarOpen(false);}} style={{display:'flex',alignItems:'center',justifyContent:'space-between',width:'100%',padding:'10px 14px 10px 12px',background:isA?'rgba(201,168,76,0.14)':'transparent',border:'none',borderLeft:isA?'3px solid '+T.gold:'3px solid transparent',cursor:'pointer'}}>
               <span style={{fontSize:11,letterSpacing:'0.06em',color:isA?T.goldLight:T.textSub,textTransform:'uppercase',fontWeight:700,textAlign:'left',lineHeight:1.45,fontFamily:"'Georgia',serif",whiteSpace:'normal',wordBreak:'break-word'}}>{m.icon}  {m.nav||m.label}</span>
               <div style={{display:'flex',gap:4,alignItems:'center'}}>
                 {urg>0&&<span style={{background:T.red,color:T.white,fontSize:9,fontWeight:700,padding:'1px 5px',borderRadius:8}}>!</span>}
@@ -3730,7 +3741,7 @@ function App(){
                 {m.id==='cowork'&&(coworkCount+coworkTaskCount+coworkWaitingCount+coworkUnreadCount)>0&&<span style={{background:T.tealDeep,color:'#fff',fontSize:9,fontWeight:700,padding:'1px 6px',borderRadius:10,minWidth:18,textAlign:'center'}}>{coworkCount+coworkTaskCount+coworkWaitingCount+coworkUnreadCount}</span>}
                 {m.id!=='chat'&&cnt>0&&<span style={{background:'rgba(255,255,255,0.1)',color:T.textSub,fontSize:10,fontWeight:700,padding:'2px 6px',borderRadius:10,minWidth:20,textAlign:'center'}}>{cnt}</span>}
               </div>
-            </button></React.Fragment>;
+            </button>}</React.Fragment>;
           })}
         </div>
         <div style={{flex:1,display:'flex',flexDirection:'column',overflow:'hidden'}}><QuickAccessBar/><div className='pmtp-content' style={{flex:1,overflowY:'auto'}}>
@@ -3812,11 +3823,11 @@ function App(){
                   {label:'Overview',color:T.navy,ids:['hpTrips','hpFollowups']},
                   {label:'Collaboration Station',color:'#9b59b6',ids:['referrals','agentRequests','cowork']},
                   {label:'FIT Station',color:T.gold,ids:['fitHub']},
-                  {label:'Reminder Station',color:T.teal,ids:['checklists','calendar','components','finalPayments','hotelRequests','itineraries','newInquiries','obc','softFollowups','supplierInteractions']},
+                  {label:'Reminder Station',color:T.teal,ids:['checklists','calendar','clientChanges','components','finalPayments','hotelRequests','itineraries','newInquiries','obc','softFollowups','supplierInteractions']},
                   {label:'My Agent Station',color:'#5a4a8a',ids:['staffRequests','admin','adminCowork','commissions','vault','chat']},
                 ];
                 const renderCard=(m)=>{
-                  const ACOW_ADMINS=['Christina Oman','Tabitha Garcia'];
+                  const ACOW_ADMINS=['Christina Garcia','Tabitha Garcia'];
                   const isACOWAdmin=ACOW_ADMINS.includes(agentName)||ACOW_ADMINS.some(n=>agentName&&n.toLowerCase().includes(agentName.toLowerCase().split(' ')[0]));
                   if(m.id==='adminCowork'&&!isACOWAdmin)return null;
                   const items=m.id==='cowork'?Array(coworkTaskCount+coworkWaitingCount+coworkUnreadCount).fill({}):m.id==='fitHub'?Array(fitPayDueCount+fitPaidCount).fill({}):active(m.id);
